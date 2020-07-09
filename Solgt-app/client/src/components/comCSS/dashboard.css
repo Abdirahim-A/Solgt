@@ -101,6 +101,14 @@
     transition: 0.3s;
 }
 
+.dashboard_item_kostnader--div{
+    display: grid;
+    grid-template-columns: auto 25px;
+    grid-gap: 0.5vw;
+    justify-content: flex-start;
+    cursor: pointer;
+}
+
 .progress_info_txt {
     font-size: 20px;
     font-weight: 300;
@@ -109,10 +117,10 @@
 }
 
 .progress_costs_close{
-    height: 45px;
     background-color: transparent;
     padding: 0px;
     cursor: pointer;
+    border: solid 1px transparent;
     transition: 0.3s ease-in;
    }
 
@@ -120,6 +128,7 @@
  height: 120px;
  background-color: aliceblue;
  padding: 15px;
+ border: solid 1px;
  border-radius: 10px;
  cursor: pointer;
  transition: 0.3s ease-in;
@@ -230,4 +239,58 @@
     border: solid 1px rgb(61, 130, 229);
     transform: translatey(-5px);
     color: white;
+}
+
+/*responsive menu*/
+
+.dashboard_item_meny_phone--div{
+    display: none;
+    grid-template-columns: auto 25px;
+    grid-gap: 0.5vw;
+    justify-content: center;
+    cursor: pointer;
+}
+.dropdown_img{
+    width: 100%;
+    margin: auto;
+}
+
+.dashboard_item_meny_top_title{
+    font-size: 16px;
+}
+
+
+/* responsiveness */
+
+@media screen and (max-width: 1168px) {
+    .navbar_item_image{
+        width: 40%;
+    }
+    .dashboard {
+        grid-template-columns: auto;
+    }
+    .dashboard_item_meny_top_ul{
+        display: none;
+    }
+
+    .dashboard_item_meny_phone--div{
+        display: grid;
+    }
+    .dashboard_item_meny_top{
+        text-align: center;
+    }
+
+    .dashboard_item_progress{
+        background-color: white;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+        border: none;
+    }
+
+}
+
+@media screen and (max-width: 500px) {
+    .navbar_item_image{
+        width: 30%;
+    }
+
 }

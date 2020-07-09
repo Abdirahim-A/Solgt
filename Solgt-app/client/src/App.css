@@ -38,10 +38,11 @@ button:focus {
 
 .navbar_inner {
   display: grid;
-  grid-template-columns: 200px auto 50px;
+  grid-template-columns: auto auto;
   padding: 15px 0px;
   margin: 0px 50px;
   transition: 0.3s;
+  justify-content: space-between;
 }
 
 .navbar_item {
@@ -50,17 +51,10 @@ button:focus {
   transition: 0.3s;
 }
 
-.navbar_item--margin {
-  margin: auto 0;
-}
-
 .navbar_item_image {
   width: 60%;
 }
 
-.navbar_item--div {
-  float: right;
-}
 
 .navbar_item_dropdown {
   cursor: pointer;

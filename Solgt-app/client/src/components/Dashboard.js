@@ -8,7 +8,8 @@ class Dashboard extends Component{
     super();
     //Set default message
     this.state = {
-      open: true,  
+      openMeny: true,  
+      open: false,  
       progress: [],
       godtattTilbud: [],
       avtalBefaring: [],
@@ -17,6 +18,7 @@ class Dashboard extends Component{
       kostnader: [],
     }
     this.openKostnader = this.openKostnader.bind(this);
+    this.openMeny = this.openMeny.bind(this);
   }
 
   componentDidMount() {
@@ -39,6 +41,12 @@ class Dashboard extends Component{
     }));
   }
 
+  openMeny() {
+    this.setState(state => ({
+      openMeny: !this.state.openMeny,
+    }));
+  }
+
   render(){
     var kostnader = this.state.kostnader.map((key => key.kostnad))
     var totaleKostnader = 0
@@ -51,9 +59,12 @@ class Dashboard extends Component{
   return (
     <div class="dashboard">
     <div class="dashboad_item">
+
         <div class="dashboard_item_meny">
             <div class="dashboard_item_meny_top">
-                <ul class="dashboard_item_meny_top_ul">
+            <div class="dashboard_item_meny_phone--div" onClick={this.openMeny}><h3 class="dashboard_item_meny_top_title">Naviger til</h3> <img src={process.env.PUBLIC_URL + '/images/icons/dropdown.png'} class="dropdown_img" /></div>
+
+                <ul class="dashboard_item_meny_top_ul" style={ this.state.openMeny ? { display: 'block'} : { display: 'none'}}>
                     <li class="dashboard_item_meny_top_li"><img src={process.env.PUBLIC_URL + '/images/icons/checklist.png'} class="dashboard_item_meny_top_img" />
                         <p>Oversikt</p>
                     </li>
@@ -89,8 +100,9 @@ class Dashboard extends Component{
                 </div>
 
                 <div onClick={this.openKostnader} class={this.state.open ? "dashboard_item_progress_info_items progress_costs_open" : "dashboard_item_progress_info_items progress_costs_close"}>
-                        <div>
+                        <div class="dashboard_item_kostnader--div">
                             <h5 class="progress_info_txt">Kostnader</h5>
+                            <img src={process.env.PUBLIC_URL + '/images/icons/dropdown.png'} class="dropdown_img" />
                         </div>
                         <div>
                             <h5 class="progress_info_txt">{totaleKostnader}</h5>
@@ -177,7 +189,7 @@ class Dashboard extends Component{
         </div>
     </div>
     <div class="dashboad_item">
-        <div class="dashboard_item_profile">
+    <div class="dashboard_item_profile">
             <div class="dashboard_item_profile_info">
                 <div class="dashboard_item_profile_info_item">
                     <img src={process.env.PUBLIC_URL + '/images/damn2.jpg'} class="dashboard_item_profile_info_image" /></div>
