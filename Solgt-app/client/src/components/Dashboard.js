@@ -111,7 +111,7 @@ class Dashboard extends Component{
                         {this.state.kostnader.map((key => 
                             <p class="progress_costs_info_txt"> {key.navn} <b>{key.kostnad}</b></p>
                             ))}
-                        </div>
+                        </div>u
                 </div>
 
                 <div class="dashboard_item_progress_info_items">

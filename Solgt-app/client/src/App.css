@@ -73,6 +73,18 @@ button:focus {
   }
 }
 
+@keyframes fadeAwayRight {
+  0% {
+      opacity: 1;
+      transform: translatex(0px)
+  }
+
+  100% {
+      opacity: 0;
+      transform: translatex(10px)
+  }
+}
+
 @keyframes fadeRight{
   0% {
       opacity: 0;
