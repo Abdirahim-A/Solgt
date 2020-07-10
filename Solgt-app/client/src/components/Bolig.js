@@ -15,7 +15,6 @@ class Bolig extends Component{
   }
 
   componentDidMount() {
-    //GET message from server using fetch api 
       axios.get('/boliger')
       .then(res => {
         const bolig = res.data;
@@ -44,7 +43,7 @@ class Bolig extends Component{
         <div class="bolig_info_item">
             <div class="bolig_info_item_top">
                 <p>Resultater: {this.state.bolig.length}</p>
-                <div><select id="cars" class="bolig_info_item_top_select">
+                <div><select class="bolig_info_item_top_select">
                     <option disabled>Prisantydning</option>
                     <option value="HALA">Høy - Lav</option>
                     <option value="LAHA">Lav - Høy</option>
@@ -146,11 +145,8 @@ class Bolig extends Component{
                 <p class="bolig_filter_input_label">Område, by eller sted</p>
                 <div class="bolig_filter_input--item_select--div">
                     <div>
-                        <select id="cars" class="bolig_filter_input_select">
-                            <option value="volvo">Volvo</option>
-                            <option value="saab">Saab</option>
-                            <option value="opel">Opel</option>
-                            <option value="audi">Audi</option>
+                        <select class="bolig_filter_input_select">
+                            <option value="Frogner">Frogner</option>
                         </select>
                     </div>
                     <div>
