@@ -10,23 +10,73 @@ class Bolig extends Component{
     this.state = {
         openFilter: false,
         bolig: [],
+        filterBolig: [],
+        mMin: '',
+        mMax: '',
+        PrisantydningMin: '',
+        PrisantydningMax: '',
+        kvmPrisMin: '',
+        kvmPrisMax: '',
+        ByggeaarMin: '',
+        ByggeaarMax: '',
+        SoveromMin: '',
+        SoveromMax: '',
     }
     this.openFilter = this.openFilter.bind(this);
+    this.MinMax = this.MinMax.bind(this);
   }
 
-  componentDidMount() {
-      axios.get('/boliger')
-      .then(res => {
-        const bolig = res.data;
-        this.setState({ bolig });
-      })
-  }
+    componentDidMount() {
+        axios.get('/boliger')
+        .then(res => {
+            const bolig = res.data;
+            this.setState({ bolig: bolig, filterBolig: bolig });
+        })
+    }
 
-  openFilter() {
-    this.setState(state => ({
-      openFilter: !this.state.openFilter,
-    }));
-  }
+    openFilter() {
+        this.setState(state => ({
+            openFilter: !this.state.openFilter,
+        }));
+    }
+
+
+    MinMax(event){
+        if (event.target.value == ''){
+            this.setState({
+                [event.target.name]: event.target.value, 
+            });
+        } else{
+            this.setState({
+                [event.target.name]: parseInt(event.target.value), 
+            });
+        }
+    }
+
+    search(event){
+        var key = event
+        var Min = key + 'Min'
+        var Max = key + 'Max'
+
+        if (this.state[Max] == ''){
+                this.setState({
+                    bolig: this.state.filterBolig.filter(x => parseFloat(x[key].replace(/,/g, ''))  >= this.state[Min]),
+                    openFilter: !this.state.openFilter,
+                });
+
+        } else if (this.state[Min] == ''){
+                this.setState({
+                    bolig: this.state.filterBolig.filter(x => parseFloat(x[key].replace(/,/g, ''))  <= this.state[Max]),
+                    openFilter: !this.state.openFilter,
+                });
+
+        } else {
+                this.setState({
+                    bolig: this.state.filterBolig.filter(x => parseFloat(x[key].replace(/,/g, ''))  >= this.state[Min] && parseFloat(x[key].replace(/,/g, ''))  <= this.state[Max]),
+                    openFilter: !this.state.openFilter,
+                });
+            }
+    }
 
   render(){
   return (
@@ -54,6 +104,7 @@ class Bolig extends Component{
             <div class="bolig_table">
                 <table>
                     <tr>
+                        <th>#</th>
                         <th>Adresse</th>
                         <th>Areal (p-rom)</th>
                         <th>Soverom</th>
@@ -64,8 +115,9 @@ class Bolig extends Component{
                         <th>Prisantydning</th>
                     </tr>
 
-                    {this.state.bolig.map((key => 
+                    {this.state.bolig.map((key, index) => 
                     <tr>
+                        <td>{index}</td>
                         <td>{key.Adresse}</td>
                         <td>{key.m}</td>
                         <td>{key.Soverom}</td>
@@ -75,32 +127,40 @@ class Bolig extends Component{
                         <td>{key.Etasje}</td>
                         <td>{key.Prisantydning}</td>
                     </tr>
-                    ))}
+                    )}
                 </table>
             </div>
         </div>
     </div>
-    <div class="bolig_filter" style={this.state.openFilter ? {animation: 'boligSlideIn 0.5s both'} : {animation: 'boligSlideOut 0.5s both'}}>
+    <div class="bolig_filter" style={this.state.openFilter ? {width: '25%', visibility: 'visible'} : {width: '0%', visibility: 'hidden'} }>
         <button class="bolig_filter_input_reset--btn" onClick={this.openFilter}>Gjem meny</button>
-        <div class="bolig_filter_input--container" style={this.state.openFilter ? {animation: 'fadeUp 0.5s 0.5s both'} : {animation: 'fadeAwayRight 0.2s both'}}>
+        <div class="bolig_filter_input--container" style={this.state.openFilter ? {animation: 'fadeUp 0.5s 0.5s both'} : {animation: 'fadeAwayRight 0.1s both'}}>
             <div class="bolig_filter_input--item bolig_filter--top">
                 <h3 class="bolig_filter_input_title">Filtrer på boliger</h3>
-                <button class="bolig_filter_input_reset--btn">Nullstill alle filtre</button>
+                <button class="bolig_filter_input_reset--btn" onClick={() => window.location.reload(false)}>Nullstill alle filtre</button>
             </div>
             <div class="bolig_filter_input--item">
                 <p class="bolig_filter_input_label">Areal (p-rom)</p>
                 <div class="bolig_filter_input--item_btn--div">
                     <div>
-                        <input type="number" class="bolig_filter_input_input" />
+                        <input type="number" class="bolig_filter_input_input" 
+                        name="mMin"
+                        value={this.state.mMin}
+                        onChange={this.MinMax}
+                        />
                         <p class="bolig_filter_input_label">Fra kvadratmeter</p>
                     </div>
 
                     <div>
-                        <input type="number" class="bolig_filter_input_input" />
+                        <input type="number" class="bolig_filter_input_input" 
+                        name="mMax"
+                        value={this.state.mMax}
+                        onChange={this.MinMax}
+                        />
                         <p class="bolig_filter_input_label">Til kvadratmeter</p>
                     </div>
                     <div>
-                        <div class="grey-search-box"><img src={process.env.PUBLIC_URL + '/images/icons/searchFilter.png'}  class="search-filter--img" /></div>
+                        <div class="grey-search-box" onClick={this.search.bind(this, 'm')}><img src={process.env.PUBLIC_URL + '/images/icons/searchFilter.png'}  class="search-filter--img" /></div>
                     </div>
                 </div>
             </div>
@@ -109,16 +169,24 @@ class Bolig extends Component{
                 <p class="bolig_filter_input_label">Prisantydning</p>
                 <div class="bolig_filter_input--item_btn--div">
                     <div>
-                        <input type="number" class="bolig_filter_input_input" />
+                        <input type="number" class="bolig_filter_input_input" 
+                        name="PrisantydningMin"
+                        value={this.state.PrisantydningMin}
+                        onChange={this.MinMax}
+                        />
                         <p class="bolig_filter_input_label">Fra kr</p>
                     </div>
 
                     <div>
-                        <input type="number" class="bolig_filter_input_input" />
+                        <input type="number" class="bolig_filter_input_input" 
+                        name="PrisantydningMax"
+                        value={this.state.PrisantydningMax}
+                        onChange={this.MinMax}
+                        />
                         <p class="bolig_filter_input_label">Til kr</p>
                     </div>
                     <div>
-                        <div class="grey-search-box"><img src={process.env.PUBLIC_URL + '/images/icons/searchFilter.png'}  class="search-filter--img" /></div>
+                        <div class="grey-search-box" onClick={this.search.bind(this, 'Prisantydning')}><img src={process.env.PUBLIC_URL + '/images/icons/searchFilter.png'}  class="search-filter--img" /></div>
                     </div>
                 </div>
             </div>
@@ -127,16 +195,24 @@ class Bolig extends Component{
                 <p class="bolig_filter_input_label">Kvm-pris</p>
                 <div class="bolig_filter_input--item_btn--div">
                     <div>
-                        <input type="number" class="bolig_filter_input_input" />
+                        <input type="number" class="bolig_filter_input_input" 
+                        name="kvmPrisMin"
+                        value={this.state.kvmPrisMin}
+                        onChange={this.MinMax}
+                        />
                         <p class="bolig_filter_input_label">Fra kr</p>
                     </div>
 
                     <div>
-                        <input type="number" class="bolig_filter_input_input" />
+                        <input type="number" class="bolig_filter_input_input" 
+                        name="kvmPrisMax"
+                        value={this.state.kvmPrisMax}
+                        onChange={this.MinMax}
+                        />
                         <p class="bolig_filter_input_label">Til kr</p>
                     </div>
                     <div>
-                        <div class="grey-search-box"><img src={process.env.PUBLIC_URL + '/images/icons/searchFilter.png'}  class="search-filter--img" /></div>
+                        <div class="grey-search-box" onClick={this.search.bind(this, 'kvmPris')}><img src={process.env.PUBLIC_URL + '/images/icons/searchFilter.png'}  class="search-filter--img" /></div>
                     </div>
                 </div>
             </div>
@@ -159,33 +235,49 @@ class Bolig extends Component{
                 <p class="bolig_filter_input_label">Byggeår</p>
                 <div class="bolig_filter_input--item_btn--div">
                     <div>
-                        <input type="number" class="bolig_filter_input_input" />
+                        <input type="number" class="bolig_filter_input_input" 
+                        name="ByggeaarMin"
+                        value={this.state.ByggeaarMin}
+                        onChange={this.MinMax}
+                        />
                         <p class="bolig_filter_input_label">Fra år</p>
                     </div>
 
                     <div>
-                        <input type="number" class="bolig_filter_input_input" />
+                        <input type="number" class="bolig_filter_input_input" 
+                        name="ByggeaarMax"
+                        value={this.state.ByggeaarMax}
+                        onChange={this.MinMax}
+                        />
                         <p class="bolig_filter_input_label">Til år</p>
                     </div>
                     <div>
-                        <div class="grey-search-box"><img src={process.env.PUBLIC_URL + '/images/icons/searchFilter.png'}  class="search-filter--img" /></div>
+                        <div class="grey-search-box" onClick={this.search.bind(this, 'Byggeaar')}><img src={process.env.PUBLIC_URL + '/images/icons/searchFilter.png'}  class="search-filter--img" /></div>
                     </div>
                 </div>
             </div>
             <div class="bolig_filter_input--item">
-                <p class="bolig_filter_input_label">Fellesutgifter</p>
+                <p class="bolig_filter_input_label">Soverom</p>
                 <div class="bolig_filter_input--item_btn--div">
                     <div>
-                        <input type="number" class="bolig_filter_input_input" />
+                        <input type="number" class="bolig_filter_input_input" 
+                        name="SoveromMin"
+                        value={this.state.SoveromMin}
+                        onChange={this.MinMax}
+                        />
                         <p class="bolig_filter_input_label">Fra kr</p>
                     </div>
 
                     <div>
-                        <input type="number" class="bolig_filter_input_input" />
+                        <input type="number" class="bolig_filter_input_input" 
+                        name="SoveromMax"
+                        value={this.state.SoveromMax}
+                        onChange={this.MinMax}
+                        />
                         <p class="bolig_filter_input_label">Til kr</p>
                     </div>
                     <div>
-                        <div class="grey-search-box"><img src={process.env.PUBLIC_URL + '/images/icons/searchFilter.png'} class="search-filter--img" /></div>
+                        <div class="grey-search-box" onClick={this.search.bind(this, 'Soverom')}><img src={process.env.PUBLIC_URL + '/images/icons/searchFilter.png'} class="search-filter--img" /></div>
                     </div>
                 </div>
             </div>

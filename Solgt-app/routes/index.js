@@ -18,7 +18,7 @@ router.get('/boliger', function(req, res) {
   csv()
   .fromFile(__dirname + "/Datasett-boliger.csv")
   .then(function(jsonArrayObj){
-     res.json(jsonArrayObj); 
+    res.json(jsonArrayObj); 
    })
 });
 
