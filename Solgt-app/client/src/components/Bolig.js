@@ -12,25 +12,29 @@ class Bolig extends Component{
         bolig: [],
         filterBolig: [],
         mMin: '',
-        mMax: '',
+        mMax: Infinity,
         PrisantydningMin: '',
-        PrisantydningMax: '',
+        PrisantydningMax: Infinity,
         kvmPrisMin: '',
-        kvmPrisMax: '',
+        kvmPrisMax: Infinity,
         ByggeaarMin: '',
-        ByggeaarMax: '',
+        ByggeaarMax: Infinity,
         SoveromMin: '',
-        SoveromMax: '',
+        SoveromMax: Infinity,
     }
     this.openFilter = this.openFilter.bind(this);
-    this.MinMax = this.MinMax.bind(this);
+    this.Sort = this.Sort.bind(this);
+    this.Min = this.Min.bind(this);
+    this.Max = this.Max.bind(this);
   }
 
     componentDidMount() {
         axios.get('/boliger')
         .then(res => {
             const bolig = res.data;
-            this.setState({ bolig: bolig, filterBolig: bolig });
+            const sortedBolig = bolig.sort((a,b) => a.Prisantydning.replace(/,/g, '') - b.Prisantydning.replace(/,/g, ''));
+            this.setState({ bolig: sortedBolig, filterBolig: sortedBolig
+        });
         })
     }
 
@@ -40,42 +44,53 @@ class Bolig extends Component{
         }));
     }
 
+    Sort(event){
+        if (event.target.value == 'highToLow'){
+            this.setState({
+                filterBolig: this.state.bolig.sort((a,b) => b.Prisantydning.replace(/,/g, '') - a.Prisantydning.replace(/,/g, ''))
+            });
+        } else {
+            this.setState({
+                filterBolig: this.state.bolig.sort((a,b) => a.Prisantydning.replace(/,/g, '') - b.Prisantydning.replace(/,/g, ''))
+            });
+        }
+    }
 
-    MinMax(event){
+    Min(event){
         if (event.target.value == ''){
             this.setState({
-                [event.target.name]: event.target.value, 
+                [event.target.name]: event.target.value
             });
         } else{
             this.setState({
-                [event.target.name]: parseInt(event.target.value), 
+                [event.target.name]: parseInt(event.target.value)
+            });
+        }
+    }
+
+    Max(event){
+        if (event.target.value == ''){
+            this.setState({
+                [event.target.name]: Infinity
+            });
+        } else{
+            this.setState({
+                [event.target.name]: parseInt(event.target.value)
             });
         }
     }
 
     search(event){
-        var key = event
-        var Min = key + 'Min'
-        var Max = key + 'Max'
-
-        if (this.state[Max] == ''){
-                this.setState({
-                    bolig: this.state.filterBolig.filter(x => parseFloat(x[key].replace(/,/g, ''))  >= this.state[Min]),
-                    openFilter: !this.state.openFilter,
-                });
-
-        } else if (this.state[Min] == ''){
-                this.setState({
-                    bolig: this.state.filterBolig.filter(x => parseFloat(x[key].replace(/,/g, ''))  <= this.state[Max]),
-                    openFilter: !this.state.openFilter,
-                });
-
-        } else {
-                this.setState({
-                    bolig: this.state.filterBolig.filter(x => parseFloat(x[key].replace(/,/g, ''))  >= this.state[Min] && parseFloat(x[key].replace(/,/g, ''))  <= this.state[Max]),
-                    openFilter: !this.state.openFilter,
-                });
-            }
+        this.setState({
+            bolig: this.state.filterBolig.filter(x => 
+            parseFloat(x.m.replace(/,/g, ''))  >= this.state.mMin&& parseFloat(x.m.replace(/,/g, ''))  <= this.state.mMax    
+            && parseFloat(x.Prisantydning.replace(/,/g, ''))  >= this.state.PrisantydningMin && parseFloat(x.Prisantydning.replace(/,/g, ''))  <= this.state.PrisantydningMax
+            && parseFloat(x.kvmPris.replace(/,/g, ''))  >= this.state.kvmPrisMin && parseFloat(x.kvmPris.replace(/,/g, ''))  <= this.state.kvmPrisMax
+            && parseFloat(x.Byggeaar.replace(/,/g, ''))  >= this.state.ByggeaarMin && parseFloat(x.Byggeaar.replace(/,/g, ''))  <= this.state.ByggeaarMax
+            && parseFloat(x.Soverom.replace(/,/g, ''))  >= this.state.SoveromMin && parseFloat(x.Soverom.replace(/,/g, ''))  <= this.state.SoveromMax
+            ),
+            openFilter: !this.state.openFilter,
+        });
     }
 
   render(){
@@ -93,10 +108,10 @@ class Bolig extends Component{
         <div class="bolig_info_item">
             <div class="bolig_info_item_top">
                 <p>Resultater: {this.state.bolig.length}</p>
-                <div><select class="bolig_info_item_top_select">
+                <div><select class="bolig_info_item_top_select" onChange={this.Sort}>
                     <option disabled>Prisantydning</option>
-                    <option value="HALA">Høy - Lav</option>
-                    <option value="LAHA">Lav - Høy</option>
+                    <option value="lowToHigh">Lav - Høy</option>
+                    <option value="highToLow">Høy - Lav</option>
                 </select>
                     <button class="openFilter_btn" onClick={this.openFilter}>Filter</button>
                 </div>
@@ -146,7 +161,7 @@ class Bolig extends Component{
                         <input type="number" class="bolig_filter_input_input" 
                         name="mMin"
                         value={this.state.mMin}
-                        onChange={this.MinMax}
+                        onChange={this.Min}
                         />
                         <p class="bolig_filter_input_label">Fra kvadratmeter</p>
                     </div>
@@ -155,7 +170,7 @@ class Bolig extends Component{
                         <input type="number" class="bolig_filter_input_input" 
                         name="mMax"
                         value={this.state.mMax}
-                        onChange={this.MinMax}
+                        onChange={this.Max}
                         />
                         <p class="bolig_filter_input_label">Til kvadratmeter</p>
                     </div>
@@ -172,7 +187,7 @@ class Bolig extends Component{
                         <input type="number" class="bolig_filter_input_input" 
                         name="PrisantydningMin"
                         value={this.state.PrisantydningMin}
-                        onChange={this.MinMax}
+                        onChange={this.Min}
                         />
                         <p class="bolig_filter_input_label">Fra kr</p>
                     </div>
@@ -181,7 +196,7 @@ class Bolig extends Component{
                         <input type="number" class="bolig_filter_input_input" 
                         name="PrisantydningMax"
                         value={this.state.PrisantydningMax}
-                        onChange={this.MinMax}
+                        onChange={this.Max}
                         />
                         <p class="bolig_filter_input_label">Til kr</p>
                     </div>
@@ -198,7 +213,7 @@ class Bolig extends Component{
                         <input type="number" class="bolig_filter_input_input" 
                         name="kvmPrisMin"
                         value={this.state.kvmPrisMin}
-                        onChange={this.MinMax}
+                        onChange={this.Min}
                         />
                         <p class="bolig_filter_input_label">Fra kr</p>
                     </div>
@@ -207,7 +222,7 @@ class Bolig extends Component{
                         <input type="number" class="bolig_filter_input_input" 
                         name="kvmPrisMax"
                         value={this.state.kvmPrisMax}
-                        onChange={this.MinMax}
+                        onChange={this.Max}
                         />
                         <p class="bolig_filter_input_label">Til kr</p>
                     </div>
@@ -238,7 +253,7 @@ class Bolig extends Component{
                         <input type="number" class="bolig_filter_input_input" 
                         name="ByggeaarMin"
                         value={this.state.ByggeaarMin}
-                        onChange={this.MinMax}
+                        onChange={this.Min}
                         />
                         <p class="bolig_filter_input_label">Fra år</p>
                     </div>
@@ -247,7 +262,7 @@ class Bolig extends Component{
                         <input type="number" class="bolig_filter_input_input" 
                         name="ByggeaarMax"
                         value={this.state.ByggeaarMax}
-                        onChange={this.MinMax}
+                        onChange={this.Max}
                         />
                         <p class="bolig_filter_input_label">Til år</p>
                     </div>
@@ -263,7 +278,7 @@ class Bolig extends Component{
                         <input type="number" class="bolig_filter_input_input" 
                         name="SoveromMin"
                         value={this.state.SoveromMin}
-                        onChange={this.MinMax}
+                        onChange={this.Min}
                         />
                         <p class="bolig_filter_input_label">Fra kr</p>
                     </div>
@@ -272,7 +287,7 @@ class Bolig extends Component{
                         <input type="number" class="bolig_filter_input_input" 
                         name="SoveromMax"
                         value={this.state.SoveromMax}
-                        onChange={this.MinMax}
+                        onChange={this.Max}
                         />
                         <p class="bolig_filter_input_label">Til kr</p>
                     </div>
