@@ -14,6 +14,10 @@ class Tilbud extends Component{
       risiko: false,
       conv: false,
       opp: false,
+      renteHov: false,
+      risikoHov: false,
+      convHov: false,
+      oppHov: false,
       prosent: 0
     }
     this.changedValue = this.changedValue.bind(this)
@@ -97,34 +101,34 @@ class Tilbud extends Component{
     
     <div class="markedsverdi_item">
         <ul class="markedsverdi_item--ul">
-            <li class="markedsverdi_item--li" id="rente" value="50" onClick={this.Percentage} style={this.state.rente ? {opacity: '1'} : {opacity: '0.5'}}>0.5%</li>
-            <li class="markedsverdi_item--li" id="risiko" value="100" onClick={this.Percentage}>1%</li>
-            <li class="markedsverdi_item--li" id="conv" value="50" onClick={this.Percentage}>0.5%</li>
-            <li class="markedsverdi_item--li" id="opp" value="25" onClick={this.Percentage}>0.25%</li>
+            <li class="markedsverdi_item--li" id="rente" value="50" onClick={this.Percentage} onMouseOver={() => this.setState({ renteHov: true })} onMouseOut={() => this.setState({ renteHov: false })}>0.5%</li>
+            <li class="markedsverdi_item--li" id="risiko" value="100" onClick={this.Percentage} onMouseOver={() => this.setState({ risikoHov: true })} onMouseOut={() => this.setState({ risikoHov: false })}>1%</li>
+            <li class="markedsverdi_item--li" id="conv" value="50" onClick={this.Percentage} onMouseOver={() => this.setState({ convHov: true })} onMouseOut={() => this.setState({ convHov: false })}>0.5%</li>
+            <li class="markedsverdi_item--li" id="opp" value="25" onClick={this.Percentage} onMouseOver={() => this.setState({ oppHov: true })} onMouseOut={() => this.setState({oppHov: false })}>0.25%</li>
         </ul>
     </div>
     
     <div class="markedsverdi_item prercentage">
         <div class="prercentage_container">
-            <div class="prercentage_item">
-            <h3 class="prercentage_container--title" style={this.state.rente ? {opacity: '1'} : {opacity: '0.5'}}>0.5% Renteutgifter</h3>
-            <p class="prercentage_container--text">Utgifter relatert til finansiering av perioden mellom du selger til boligen blir videresolgt</p>
+            <div class="prercentage_item" style={this.state.rente ? {boxShadow: '-10px 10px 20px rgba(0, 0, 0, 0.25)', transform: 'translatey(-5px)'} : {boxShadow: '0px 0px 0px rgba(0, 0, 0, 0.25)', transform: 'translatey(0px)'}}>
+            <h3 class="prercentage_container--title" style={this.state.renteHov ? {opacity: '1'} : {opacity: '0.5'}}>0.5% Renteutgifter</h3>
+            <p class="prercentage_container--text" style={this.state.rente ? {opacity: '1'} : {opacity: '0.5'}}>Utgifter relatert til finansiering av perioden mellom du selger til boligen blir videresolgt</p>
             </div>
             
-            <div class="prercentage_item">
-            <h3 class="prercentage_container--title">1% Risikotillegg</h3>
-            <p class="prercentage_container--text">For å dekke inn risikoen ved uforutsette markedsbevegelser</p>
+            <div class="prercentage_item" style={this.state.risiko ? {boxShadow: '-10px 10px 20px rgba(0, 0, 0, 0.25)', transform: 'translatey(-5px)'} : {boxShadow: '0px 0px 0px rgba(0, 0, 0, 0.25)', transform: 'translatey(0px)'}}>
+            <h3 class="prercentage_container--title"  style={this.state.risikoHov ? {opacity: '1'} : {opacity: '0.5'}}>1% Risikotillegg</h3>
+            <p class="prercentage_container--text" style={this.state.risiko ? {opacity: '1'} : {opacity: '0.5'}}>For å dekke inn risikoen ved uforutsette markedsbevegelser</p>
             </div>
         </div>
         <div class="prercentage_container">
-            <div class="prercentage_item">
-            <h3 class="prercentage_container--title">0.5% Convenience</h3>
-            <p class="prercentage_container--text">Premium for at vi gjør opplevelsen enklere og bedre for deg</p>
+            <div class="prercentage_item" style={this.state.conv ? {boxShadow: '-10px 10px 20px rgba(0, 0, 0, 0.25)', transform: 'translatey(-5px)'} : {boxShadow: '0px 0px 0px rgba(0, 0, 0, 0.25)', transform: 'translatey(0px)'}}>
+            <h3 class="prercentage_container--title"  style={this.state.convHov ? {opacity: '1'} : {opacity: '0.5'}}>0.5% Convenience</h3>
+            <p class="prercentage_container--text" style={this.state.conv ? {opacity: '1'} : {opacity: '0.5'}}>Premium for at vi gjør opplevelsen enklere og bedre for deg</p>
             </div>
             
-            <div class="prercentage_item">
-            <h3 class="prercentage_container--title">0.25% oppgjør</h3>
-            <p class="prercentage_container--text">Utgifter relatert til mellomfinansiering</p>
+            <div class="prercentage_item" style={this.state.opp ? {boxShadow: '-10px 10px 20px rgba(0, 0, 0, 0.25)', transform: 'translatey(-5px)'} : {boxShadow: '0px 0px 0px rgba(0, 0, 0, 0.25)', transform: 'translatey(0px)'}}>
+            <h3 class="prercentage_container--title"  style={this.state.oppHov ? {opacity: '1'} : {opacity: '0.5'}}>0.25% oppgjør</h3>
+            <p class="prercentage_container--text" style={this.state.opp ? {opacity: '1'} : {opacity: '0.5'}}>Utgifter relatert til mellomfinansiering</p>
             </div>
         </div>
     </div>
