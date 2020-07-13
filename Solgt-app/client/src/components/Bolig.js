@@ -100,8 +100,12 @@ class Bolig extends Component{
         <div class="bolig_info_item">
             <h3 class="bolig_info_item_tree">Søknader - Borettslagbrakkeveien 34A - Beslutningsstøtte</h3>
             <div class="bolig_info_btn--div">
-                <button class="bolig_info_btn ">Beslutningssenter</button>
-                <button class="bolig_info_btn">Gi tilbud</button>
+                <div class="bolig_info_btn ">
+                    <img src={process.env.PUBLIC_URL + '/images/icons/search.png'} class="bolig_info_btn_img" />
+                       <p>Beslutningssenter</p> 
+                </div>
+                <div class="bolig_info_btn"><img src={process.env.PUBLIC_URL + '/images/icons/money.png'} class="bolig_info_btn_img" />
+                    <p>Gi tilbud</p></div>
             </div>
         </div>
 
@@ -280,7 +284,7 @@ class Bolig extends Component{
                         value={this.state.SoveromMin}
                         onChange={this.Min}
                         />
-                        <p class="bolig_filter_input_label">Fra kr</p>
+                        <p class="bolig_filter_input_label">Min</p>
                     </div>
 
                     <div>
@@ -289,7 +293,7 @@ class Bolig extends Component{
                         value={this.state.SoveromMax}
                         onChange={this.Max}
                         />
-                        <p class="bolig_filter_input_label">Til kr</p>
+                        <p class="bolig_filter_input_label">Max</p>
                     </div>
                     <div>
                         <div class="grey-search-box" onClick={this.search.bind(this, 'Soverom')}><img src={process.env.PUBLIC_URL + '/images/icons/searchFilter.png'} class="search-filter--img" /></div>

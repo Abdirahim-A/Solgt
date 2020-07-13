@@ -62,7 +62,7 @@ class Dashboard extends Component{
 
         <div class="dashboard_item_meny">
             <div class="dashboard_item_meny_top">
-            <div class="dashboard_item_meny_phone--div" onClick={this.openMeny}><h3 class="dashboard_item_meny_top_title">Naviger til</h3> <img src={process.env.PUBLIC_URL + '/images/icons/dropdown.png'} class="dropdown_img" /></div>
+            <div class="dashboard_item_meny_phone--div" onClick={this.openMeny}><h3 class="dashboard_item_meny_top_title">Naviger til</h3> <img src={process.env.PUBLIC_URL + '/images/icons/dropdown.png'} class="dropdown_img" style={this.state.openMeny ? {transform: 'rotate(180deg)'} : {transform: 'rotate(0deg)'}}/></div>
 
                 <ul class="dashboard_item_meny_top_ul" style={ this.state.openMeny ? { display: 'block'} : { display: 'none'}}>
                     <li class="dashboard_item_meny_top_li"><img src={process.env.PUBLIC_URL + '/images/icons/checklist.png'} class="dashboard_item_meny_top_img" />
@@ -102,7 +102,7 @@ class Dashboard extends Component{
                 <div onClick={this.openKostnader} class={this.state.open ? "dashboard_item_progress_info_items progress_costs_open" : "dashboard_item_progress_info_items progress_costs_close"}>
                         <div class="dashboard_item_kostnader--div">
                             <h5 class="progress_info_txt">Kostnader</h5>
-                            <img src={process.env.PUBLIC_URL + '/images/icons/dropdown.png'} class="dropdown_img" />
+                            <img src={process.env.PUBLIC_URL + '/images/icons/dropdown.png'} class="dropdown_img" style={this.state.open ? {transform: 'rotate(180deg)'} : {transform: 'rotate(0deg)'}}/>
                         </div>
                         <div>
                             <h5 class="progress_info_txt">{totaleKostnader}</h5>

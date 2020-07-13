@@ -9,6 +9,7 @@
     display: grid;
     grid-template-columns: auto;
     grid-gap: 40px;
+    animation: fadeUp 0.3s 0.3s both;
 }
 
 .bolig_info_item_top{
@@ -16,17 +17,27 @@
     grid-template-columns: auto auto;
     grid-gap: 10px;
     justify-content: space-between;
+    animation: fadeUp 0.3s 0.5s both;
 }
 
+.bolig_info_btn--div{
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-gap: 20px;
+    justify-content: flex-start;
+}
 
+.bolig_info_btn_img{
+    margin: auto;
+    width: 100%;
+}
 .bolig_info_btn {
-    border: none;
+    display: grid;
+    grid-template-columns: 30px auto;
+    grid-gap: 20px;
+    width: 250px;
     padding: 10px 20px;
-    margin: 10px 0px;
-    margin-right: 20px;
-    width: 200px;
     border-radius: 40px;
-    border: solid 1px transparent;
     font-size: 14px;
     cursor: pointer;
     transition: 0.3s;
@@ -34,16 +45,15 @@
 
 .bolig_info_btn:hover{
     transform: translatex(5px);
-    border: solid 1px rgb(125, 192, 255);
 }
 
 .bolig_info_btn:nth-child(1){
-    background-color: lightgrey;
-    box-shadow: 0px 0px 5px #888888;
+    background-color: rgb(216, 253, 217);
+    box-shadow: 0px 0px 10px rgba(21, 184, 0, 0.25);
 }
 
 .bolig_info_btn:nth-child(2){
-    background-color: rgb(216, 253, 217);
+    background-color: lightgray;
 }
 
 .bolig_table {
@@ -51,6 +61,11 @@
     border-radius: 10px;
     box-shadow: 0px 0px 10px #888888;
     background-color: white;
+    animation: fadeUp 0.5s 0.5s both;
+}
+
+.bolig_info_item{
+    animation: fadeUp 0.3s 0.3s both;
 }
 
 .bolig_info_item_top_select,
